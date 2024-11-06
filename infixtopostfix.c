@@ -16,7 +16,9 @@ void fnInfixToPostfix(char[]);
 
 int main(void)
 {
-    char infix[]="a+b-c*(d^f)-e";
+    char infix[SIZE];
+    printf("Enter the infix expression\n");
+    scanf("%s",infix);    
     fnInfixToPostfix(infix);
     return 0;
 }

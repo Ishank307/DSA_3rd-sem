@@ -44,10 +44,16 @@ NODE fndeletefront(NODE head){
 }
 
 NODE fnInsertrear(NODE head,int item){
-    
+    NODE curr,prev,temp;
+    temp=getnode();
+    temp->info=item;
+    curr=head->llink;
+    curr->rlink=temp;
+    temp->llink=curr;
+    temp->rlink=head;
+    head->llink=temp;
 
-
-
+    return head;
 }
 void display(NODE head){
     NODE curr;
@@ -69,6 +75,7 @@ void main(void){
     head=fnInsertfront(head,10);
     head=fnInsertfront(head,18);
     head=fndeletefront(head);
+    head=fnInsertrear(head,30);
     display(head);
     return;
 }

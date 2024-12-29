@@ -82,6 +82,17 @@ void postorder(NODE root){
     return;
 }
 
+int fnMaxHeight(NODE root){
+    if (root==NULL)
+    return -1;
+    int lh=fnMaxHeight(root->llink);
+    int rh=fnMaxHeight(root->rlink);
+    if (lh>rh)
+    return lh+1;
+    else
+    return rh+1;
+
+}
 
 int main(){
 
@@ -100,7 +111,9 @@ int main(){
             case 3: inorder(root);
                     break;
             case 4: postorder(root);
-                    break;            
+                    break;         
+            case 5: printf("max height is %d",fnMaxHeight(root));
+                    break;
             default: printf("Invalid");
                      exit(0);
         }

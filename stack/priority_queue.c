@@ -52,8 +52,9 @@ void main(){
     q.rear=-1;
     fnInsert(&q,1);
     fnInsert(&q,2);
-    fnInsert(&q,3);
     fnInsert(&q,4);
+    fnInsert(&q,5);
+    fnInsert(&q,3);
     fnDisplay(&q);
     fnDelete(&q);
     fnDisplay(&q);

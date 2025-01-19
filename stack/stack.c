@@ -1,57 +1,108 @@
-// program to implement normal integer stack
-// author Ishank Kumar
+//c program to implement stack 
+#include <stdio.h>
+#include <stdlib.h>
 
-#include<stdio.h>
-#include<stdlib.h>
-# define SIZE 5
-/*Stack specification*/
+#define SIZE 100
 
 struct stack {
-    int A[SIZE];
+    int a[SIZE];
+    int top;
 };
-
 typedef struct stack STACK;
 
-/*Fuction prototypes*/
+// Check if the stack is full
+int isFull(STACK *s) {
+    return s->top == SIZE - 1;
+}
 
-void fnPush(STACK*,int);
-int fnPop(STACK*);
-int fnIsFull(STACK);
-int fnIsEmpty(STACK);
-int fnPeek(STACK);
+// Check if the stack is empty
+int isEmpty(STACK *s) {
+    return s->top == -1;
+}
 
-int main(){
-    // create stack
-    STACK s;
-
-    int iElement,ipeek,ichoice,iPoppedElement;
-    for(;;){
-        printf("1:Push\n2:Pop\n3:Peek\n4:exit\n");
-        printf("Enter the choice");
-        scanf("%d",&ichoice);
-
-        switch(ichoice){
-            case 1: printf("Enter the element to be pushed");
-                    scanf("%d",&iElement);
-                    fnPush(&s,iElement);
-                    break;
-            case 2: iPoppedElement=fnPop(&s);
-                    printf("Popped Element is %d\n",iPoppedElement);
-                    break;
-            case 3: ipeek=fnPeek(s);
-                    printf("peek Element is %d \n",ipeek);
-                    break;
-            case 4: printf("Thank You \n");
-                    Exit(0);
-            default: printf("Invalid Choice\n");
-                    printf("Please reenter your choice \n");
-                    break;
-        }       /*closure switch*/
-
+// Push an element to the stack
+void fnPush(STACK *p, int item) {
+    if (isFull(p)) {
+        printf("Stack overflow\n");
+        return;
     }
-    
+    p->top = p->top + 1;
+    p->a[p->top] = item;
 }
 
-void fnPush(STACK *s,int n ){
-    if fnIsFull(s)
+// Pop an element from the stack
+int fnPop(STACK *p) {
+    if (isEmpty(p)) {
+        printf("Stack underflow\n");
+        return -1;  // Return -1 to indicate stack is empty
+    }
+    return p->a[p->top--];
 }
+
+// Peek the top element of the stack
+int fnPeek(STACK *p) {
+    if (isEmpty(p)) {
+        printf("Stack underflow\n");
+        return -1;  // Return -1 to indicate stack is empty
+    }
+    return p->a[p->top];
+}
+
+// Display elements of the stack
+void display(STACK *p) {
+    if (isEmpty(p)) {
+        printf("Stack is empty\n");
+        return;
+    }
+    printf("Stack elements are: ");
+    for (int i = p->top; i >= 0; i--) {
+        printf("%d ", p->a[i]);
+    }
+    printf("\n");
+}
+
+int main(void) {
+    STACK s;
+    s.top = -1;  // Initialize the stack
+    int iElement, iChoice, iPoppedElement, iPeek;
+
+    for (;;) {
+        printf("1: Push\n2: Pop\n3: Peek\n4: Display\n5: Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &iChoice);
+
+        switch (iChoice) {
+            case 1:
+                printf("Enter element to be pushed: ");
+                scanf("%d", &iElement);
+                fnPush(&s, iElement);
+                break;
+
+            case 2:
+                iPoppedElement = fnPop(&s);
+                if (iPoppedElement != -1) {
+                    printf("Popped element is: %d\n", iPoppedElement);
+                }
+                break;
+
+            case 3:
+                iPeek = fnPeek(&s);
+                if (iPeek != -1) {
+                    printf("Peek element is: %d\n", iPeek);
+                }
+                break;
+
+            case 4:
+                display(&s);
+                break;
+
+            case 5:
+                exit(0);
+
+            default:
+                printf("Invalid choice\n");
+                break;
+        }
+    }
+    return 0;
+    }

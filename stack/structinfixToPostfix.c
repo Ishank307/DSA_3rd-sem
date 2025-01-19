@@ -77,7 +77,7 @@ char fnInfixToPostfix(char* infix,char*postfix){
         postfix[j++]=symbol;
       }
       else if(symbol=='('){
-        s.A[++s.top]=symbol
+        s.A[++s.top]=symbol;
       }
     
 

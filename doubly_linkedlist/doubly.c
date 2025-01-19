@@ -71,6 +71,61 @@ NODE fnDeleterear(NODE head) {
     return head;
 }
 
+NODE fnInsertAfter(NODE head, int key, int item) {
+    NODE curr, temp;
+    curr = head->rlink;
+    while (curr != head && curr->info != key) {
+        curr = curr->rlink;
+    }
+    if (curr == head) {
+        printf("Key not found\n");
+        return head;
+    }
+    temp = getnode();
+    temp->info = item;
+    temp->rlink = curr->rlink;
+    curr->rlink->llink = temp;
+    curr->rlink = temp;
+    temp->llink = curr;
+    return head;
+}
+
+NODE fnInsertBefore(NODE head, int key, int item) {
+    NODE curr, temp;
+    curr = head->rlink;
+    while (curr != head && curr->info != key) {
+        curr = curr->rlink;
+    }
+    if (curr == head) {
+        printf("Key not found\n");
+        return head;
+    }
+    temp = getnode();
+    temp->info = item;
+    temp->llink = curr->llink;
+    curr->llink->rlink = temp;
+    temp->rlink = curr;
+    curr->llink = temp;
+    return head;
+}
+
+NODE fnDeleteSpecific(NODE head, int key) {
+    NODE curr;
+    curr = head->rlink;
+    while (curr != head && curr->info != key) {
+        curr = curr->rlink;
+    }
+    if (curr == head) {
+        printf("Key not found\n");
+        return head;
+    }
+    curr->llink->rlink = curr->rlink;
+    curr->rlink->llink = curr->llink;
+    printf("Deleted element is %d\n", curr->info);
+    free(curr);
+    return head;
+}
+
 void display(NODE head) {
     NODE curr;
     if (head->rlink == head) {

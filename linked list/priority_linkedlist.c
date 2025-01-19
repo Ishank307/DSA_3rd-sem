@@ -170,17 +170,18 @@ struct node * fn_delete_element(struct node * f,int key){
         return f;}
     curr=f;
     prev=NULL;
-    while(curr!=NULL)
-    {
-        if(curr->data==key){
-            prev->next=curr->next;
-            printf("deleted element is %d",key);
-            free(curr);
-            return f;
-        }
+    while(curr!=NULL&&curr->data!=key){
         prev=curr;
         curr=curr->next;
     }
+    if(curr!=NULL){
+        prev->next=curr->next;
+        printf("Deleted element is %d",key);
+        free(curr);
+    }
+    else 
+        printf ("key not found");
+   
     return f;
 
 }
@@ -240,8 +241,12 @@ void main(){
                 scanf("%d", &beforeElement);
                 first = fn_insertBefore(first, element, beforeElement);
                 break;
+        case 8: printf("Enter the element to delete\n");
+            scanf("%d", &element);
+            first = fn_delete_element(first, element);
+            break;
 
-        case 8: display(first);
+        case 9: display(first);
                 break;
         default: printf("invalid case");
                 break;

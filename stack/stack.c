@@ -40,12 +40,12 @@ int fnPop(STACK *p) {
 }
 
 // Peek the top element of the stack
-int fnPeek(STACK *p) {
+void fnPeek(STACK *p) {
     if (isEmpty(p)) {
         printf("Stack underflow\n");
-        return -1;  // Return -1 to indicate stack is empty
+        return ;  // Return -1 to indicate stack is empty
     }
-    return p->a[p->top];
+    printf("Peeked element is %d\n",p->a[p->top]);
 }
 
 // Display elements of the stack
@@ -86,10 +86,7 @@ int main(void) {
                 break;
 
             case 3:
-                iPeek = fnPeek(&s);
-                if (iPeek != -1) {
-                    printf("Peek element is: %d\n", iPeek);
-                }
+                fnPeek(&s);
                 break;
 
             case 4:

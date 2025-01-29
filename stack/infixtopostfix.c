@@ -8,7 +8,6 @@ Date:- 28-09-2024
 #include<string.h>
 #define SIZE 100
 
-
 /*Function definitions*/
 int fnPrecedence(char);
 char fnAssociativity(char);
@@ -23,22 +22,25 @@ int main(void)
     return 0;
 }
 
+// Function to determine the precedence of operators
 int fnPrecedence(char symbol){
     if(symbol=='^'||symbol=='$')
         return 3;
-        else if (symbol=='*'||symbol=='/' )
-            return 2;
-            else if(symbol=='+'||symbol=='-')
-                return 1;
+    else if (symbol=='*'||symbol=='/' )
+        return 2;
+    else if(symbol=='+'||symbol=='-')
+        return 1;
     return -1;
 }
 
+// Function to determine the associativity of operators
 char fnAssociativity(char symbol){
     if (symbol=='^'|| symbol=='$')
-    return 'R';
-    return 'L';
+        return 'R'; // Right associative
+    return 'L'; // Left associative
 }
 
+// Function to convert infix expression to postfix
 void fnInfixToPostfix(char s[]){
     char symbol;
     char postfixIndex = 0;
@@ -47,25 +49,26 @@ void fnInfixToPostfix(char s[]){
     char stackIndex= -1;
     int i;
     int length = strlen(s);
-        for(i=0;i<length;i++){
-            symbol=s[i];
+    for(i=0;i<length;i++){
+        symbol=s[i];
 
-        /*operand*/
-
+        // If the symbol is an operand, add it to the postfix expression
         if(symbol>='a'&&symbol<='z'||symbol>='A'&&symbol<='Z'||symbol>='0'&&symbol<='9'){
             postfix[postfixIndex++]=symbol;
         }
+        // If the symbol is '(', push it to the stack
         else if(symbol=='('){
             stack[++stackIndex]=symbol;
         }
+        // If the symbol is ')', pop and output from the stack until '(' is found
         else if(symbol==')')
         {
-          while(stackIndex>=0 && stack[stackIndex]!='(')  {
+            while(stackIndex>=0 && stack[stackIndex]!='(')  {
                 postfix[postfixIndex++]=stack[stackIndex--];
             }
-            stackIndex--; /*pop (*/
+            stackIndex--; // pop '('
         }
-        /*operator*/
+        // If the symbol is an operator
         else{
             while((stackIndex>=0)&&fnPrecedence(symbol)<=fnPrecedence(stack[stackIndex])&&fnAssociativity(symbol)=='L')
             {
@@ -73,14 +76,13 @@ void fnInfixToPostfix(char s[]){
             }
             stack[++stackIndex] = symbol;
         }
+    } // End of Scanning
 
-    }/*End of Scanning*/
-
+    // Pop all the operators from the stack
     while(stackIndex!=-1){
         postfix[postfixIndex++]=stack[stackIndex--];
     }
 
-    postfix[postfixIndex]='\0';
+    postfix[postfixIndex]='\0'; // Null terminate the postfix expression
     printf("Infix expression: %s\nPostfix expression: %s\n", s, postfix);
-
 }

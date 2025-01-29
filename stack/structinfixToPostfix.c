@@ -1,86 +1,103 @@
-/*program to convert infix to postfix using structures
-Author:- Ishank Kumar
-Date:-29-09-2024
-*/
+#include <stdio.h>
+#include <string.h>
+#define max_size 10
 
-/*preprocessor dirctories*/
-
-#include<stdio.h>
-#include<string.h>
-#define SIZE 5
-
-/*structure part*/
-struct stack{
-    char A[SIZE];
-    int top;
+struct infixtopost
+{
+ int top;
+ char stack[max_size];
 };
+typedef struct infixtopost INFIX;
 
-typedef struct stack STACK;
+void infix_postfix(INFIX * ,char [] ,char []);
+int F(char symbol);
+int G(char symbol);
 
-/*Function definitions*/
-int fnPrecedence(char);
-char fnAssociativity(char);
-char fnInfixToPostfix(char*,char*);
-
-/*Function name:- Main
-  Function type:- int
-  return type:- 0
-  Author:- Ishank Kumar
-  */
-
-int main(void){
-    STACK s;
-    char infix[SIZE],postfix[SIZE];
-    printf("Enter the string :-\n");
-    scanf("%s",infix);
-    fnInfixToPostfix(infix,postfix);
-    return 0;
-}
-/*Function type :- int
-  Return type:- integers 1,2,3,-1
-  Author:- Ishank Kumar
-*/
-
-int fnPrecedence(char symbol){
-    if(symbol=='^'||symbol=='$')
-    return 3;
-        else if(symbol=='*'||symbol=='/')
-        return 2;
-            else if(symbol=='+'||symbol=='-')
-            return 1;
-    return -1;
-
+int main()
+{
+ INFIX s;
+ s.top=-1;
+ char infix[max_size],postfix[max_size];
+ printf("Enter the expresion of infix:");
+ scanf("%s",infix);
+ infix_postfix(&s, infix, postfix);
+ printf("%s",postfix);
+ return 0;
 }
 
-/*Function type :- char
-  Return type:- characters R or L
-  Author:- Ishank Kumar
-  Dtae:-29-09-2024
-*/
-
-char fnAssociativity(char symbol){
-    if(symbol=='^'||symbol=='$')
-    return 'R';
-    return 'L';
-}
-
-char fnInfixToPostfix(char* infix,char*postfix){
-    STACK s;
-    s.top=-1;
-    int i=0,j=0;
-
-    while (infix[i]!='\0'){
-      char symbol = infix[i];
-
-      /*operator */
-      if((symbol >='A' && symbol <='Z')||(symbol>='a'&&symbol<='b')||(symbol>='0'&&symbol<='9')){
-        postfix[j++]=symbol;
-      }
-      else if(symbol=='('){
-        s.A[++s.top]=symbol;
-      }
-    
-
+void infix_postfix(INFIX *s,char infix[],char postfix[])
+{
+  char symbol;
+   int j=0,i;
+   s->stack[++(s->top)]='#';
+   for (i=0;i<strlen(infix);i++)
+   {
+    symbol=infix[i];
+    if ((symbol >= 'a' && symbol <= 'z') || (symbol >= 'A' && symbol <= 'Z'))
+    {
+        postfix[j++] = symbol;
     }
-     
+
+    else if (symbol == '(')
+    {
+      s->stack[++(s->top)] = symbol;
+    }
+
+    else if (symbol == ')')
+    {
+        while (s->stack[s->top]!='(')
+        {
+            postfix[j++] = s->stack[(s->top)--];
+        }
+        s->top--;   // '(' will be ignored---
+    }
+
+    else
+    {
+        while (F(s->stack[s->top]) >= G(symbol))
+        {
+            postfix[j++] = s->stack[(s->top)--];
+        }
+    s->stack[++(s->top)] = symbol;
+    }
+ }
+
+ while (s->stack[(s->top)]!= '#') // pop all the remaining operators to postfix
+{
+    postfix[j++] = s->stack[(s->top)--];
+}
+postfix[j] = '\0';
+}
+
+
+int F(char symbol)
+{
+switch(symbol)
+{
+    case '+':
+    case '-': return 2;
+    case '*':
+    case '/': return 4;
+    case '^':
+    case '$': return 5;
+    case '(': return 0;
+    case '#': return -1;
+    default: return 8;
+}
+}
+
+int G(char symbol)
+{
+switch(symbol)
+{
+    case '+':
+    case '-': return 1;
+    case '*':
+    case '/': return 3;
+    case '^':
+    case '$': return 6;
+    case '(': return 9;
+    case ')': return 0;
+    default: return 10;
+}
 }
